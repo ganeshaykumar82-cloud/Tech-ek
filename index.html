@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Affiliate Hub - Curated Product Deals</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configure Tailwind for custom colors/font -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1D4ED8', // Blue-700
+                        'secondary': '#F97316', // Orange-600
+                        'accent': '#EC4899', // Pink-500
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scroll behavior for smooth navigation */
+        html {
+            scroll-behavior: smooth;
+        }
+        /* Mobile menu styling */
+        .mobile-menu-link {
+            transition: all 0.3s ease;
+        }
+        .mobile-menu-link:hover {
+            transform: translateX(5px);
+            color: #F97316;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800">
+
+    <!-- Modal/Message Box Structure -->
+    <div id="message-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50 p-4">
+        <div class="bg-white p-6 rounded-xl shadow-2xl max-w-sm w-full transform transition-all duration-300 scale-95 opacity-0" id="modal-content">
+            <h3 class="text-xl font-bold mb-2 text-primary">Redirecting to Partner Site</h3>
+            <p id="modal-message" class="text-gray-600 mb-4">You are about to be redirected to the merchant's site to complete your purchase. Thank you for supporting us!</p>
+            <div class="flex justify-end space-x-3">
+                <button onclick="closeModal()" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition duration-150">Stay</button>
+                <button onclick="simulateRedirect()" class="px-4 py-2 bg-secondary text-white font-semibold rounded-lg hover:bg-orange-700 transition duration-150">Continue to Deal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header & Navigation -->
+    <header class="sticky top-0 z-40 bg-white shadow-md">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <!-- Logo/Brand -->
+            <a href="#home" class="text-2xl font-extrabold text-primary flex items-center space-x-1">
+                <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.108a12.022 12.022 0 011.666 1.777h-1.528A6 6 0 0012 9V6m-6 8a6 6 0 00-6-6h15a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2v-8z"></path></svg>
+                <span>Affiliate<span class="text-secondary">Hub</span></span>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex space-x-6 text-gray-600 font-medium">
+                <a href="#home" class="hover:text-primary transition duration-150">Home</a>
+                <a href="#products" class="hover:text-primary transition duration-150">Products</a>
+                <a href="#about" class="hover:text-primary transition duration-150">About Us</a>
+                <a href="#contact" class="hover:text-primary transition duration-150">Contact</a>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden p-2 text-gray-600 rounded-lg hover:bg-gray-100 transition duration-150" aria-label="Toggle Menu">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <nav id="mobile-menu" class="hidden md:hidden bg-white shadow-lg pb-2">
+            <div class="flex flex-col space-y-2 px-4">
+                <a href="#home" class="mobile-menu-link block py-2 text-gray-700 border-b border-gray-100" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Home</a>
+                <a href="#products" class="mobile-menu-link block py-2 text-gray-700 border-b border-gray-100" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Products</a>
+                <a href="#about" class="mobile-menu-link block py-2 text-gray-700 border-b border-gray-100" onclick="document.getElementById('mobile-menu').classList.add('hidden')">About Us</a>
+                <a href="#contact" class="mobile-menu-link block py-2 text-gray-700" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="bg-primary text-white py-20 md:py-32 overflow-hidden">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight">
+                    Find the Best Deals. <span class="text-secondary block md:inline">Save Smarter.</span>
+                </h1>
+                <p class="text-xl md:text-2xl mb-8 opacity-90 max-w-3xl mx-auto">
+                    We hand-curate the top products and services, saving you time and money. Start exploring our deals today!
+                </p>
+                <a href="#products" class="inline-block px-8 py-3 text-lg font-bold bg-accent text-white rounded-full shadow-lg hover:bg-pink-600 transition duration-300 transform hover:scale-105">
+                    Explore Top Products
+                </a>
+            </div>
+        </section>
+
+        <!-- Product Listing Section -->
+        <section id="products" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">Featured Deals of the Week</h2>
+
+                <!-- Search and Filter Bar -->
+                <div class="mb-10 p-4 bg-gray-100 rounded-xl shadow-inner md:flex md:items-center md:space-x-4 space-y-4 md:space-y-0">
+                    <!-- Search Input -->
+                    <div class="relative flex-grow">
+                        <input type="text" id="search-input" onkeyup="filterProducts()" placeholder="Search products, keywords, or descriptions..." 
+                               class="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-150">
+                        <svg class="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+
+                    <!-- Category Filter Dropdown -->
+                    <div class="md:w-auto">
+                        <select id="category-filter" onchange="filterProducts()" 
+                                class="w-full md:w-48 p-3 border border-gray-300 rounded-lg bg-white focus:ring-primary focus:border-primary transition duration-150 appearance-none">
+                            <!-- Options populated by JS -->
+                        </select>
+                    </div>
+
+                    <!-- Reset Button -->
+                    <button onclick="resetFilters()" class="w-full md:w-auto p-3 bg-secondary text-white font-semibold rounded-lg hover:bg-orange-700 transition duration-150 shadow-md">
+                        Reset
+                    </button>
+                </div>
+
+                <!-- Product Grid -->
+                <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Products will be injected here by JavaScript -->
+                </div>
+                
+                <!-- No Results Message -->
+                <div id="no-results" class="hidden text-center p-10 bg-gray-100 rounded-xl mt-8">
+                    <p class="text-xl font-semibold text-gray-600">No products found matching your criteria.</p>
+                    <p class="text-gray-500 mt-2">Try adjusting your search terms or selecting 'All Categories'.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Affiliate Disclosure (MUST HAVE) -->
+        <section class="bg-yellow-50 border-t border-b border-yellow-200 py-6">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h3 class="text-lg font-bold text-yellow-800 mb-2 flex items-center justify-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.332 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    Affiliate Disclosure
+                </h3>
+                <p class="text-sm text-yellow-700 max-w-4xl mx-auto">
+                    The Affiliate Hub is a participant in various affiliate advertising programs. This means we may earn a small commission when you click on links and make purchases. This does NOT incur any additional cost to you. We only recommend products we genuinely believe in.
+                </p>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="py-16 md:py-24 bg-gray-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="lg:flex lg:items-center lg:space-x-12">
+                    <div class="lg:w-1/2">
+                        <img src="https://placehold.co/800x600/1D4ED8/FFFFFF?text=Curated+Selection" alt="Team working on selection" class="rounded-xl shadow-2xl object-cover w-full h-auto">
+                    </div>
+                    <div class="lg:w-1/2 mt-8 lg:mt-0">
+                        <span class="text-secondary font-semibold uppercase tracking-wider">Our Mission</span>
+                        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mt-2 mb-4">
+                            Simplifying Your Purchase Decisions
+                        </h2>
+                        <p class="text-lg text-gray-600 mb-6">
+                            In a world flooded with products, knowing what to buy can be overwhelming. We cut through the noise by rigorously testing, reviewing, and curating only the highest-quality items. Our goal is to connect you with deals that truly offer value.
+                        </p>
+                        <ul class="space-y-3 text-gray-700">
+                            <li class="flex items-start space-x-3">
+                                <svg class="w-5 h-5 mt-1 text-primary flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                <span>**Expert Reviews:** Honest, unbiased product analysis.</span>
+                            </li>
+                            <li class="flex items-start space-x-3">
+                                <svg class="w-5 h-5 mt-1 text-primary flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                <span>**Best Prices:** Deals updated daily to ensure savings.</span>
+                            </li>
+                            <li class="flex items-start space-x-3">
+                                <svg class="w-5 h-5 mt-1 text-primary flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                <span>**Community Driven:** Recommendations backed by user feedback.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section (Simple Placeholder) -->
+        <section id="contact" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center max-w-2xl">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Get in Touch</h2>
+                <p class="text-lg text-gray-600 mb-8">
+                    Have a question about a product, or a partnership inquiry? We'd love to hear from you.
+                </p>
+                <div class="flex flex-col space-y-4">
+                    <input type="text" placeholder="Your Name" class="p-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-150">
+                    <input type="email" placeholder="Your Email" class="p-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-150">
+                    <textarea placeholder="Your Message" rows="4" class="p-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-150"></textarea>
+                    <button class="px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-blue-800 transition duration-300 shadow-lg">
+                        Send Message
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-10">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <!-- Brand Info -->
+                <div>
+                    <h3 class="text-xl font-bold text-secondary mb-3">AffiliateHub</h3>
+                    <p class="text-sm text-gray-400">Curating the best deals, one click at a time.</p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="font-semibold mb-3">Quick Links</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#products" class="hover:text-white transition duration-150">Top Deals</a></li>
+                        <li><a href="#about" class="hover:text-white transition duration-150">Our Story</a></li>
+                        <li><a href="#" class="hover:text-white transition duration-150">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <!-- Social -->
+                <div>
+                    <h4 class="font-semibold mb-3">Follow Us</h4>
+                    <div class="flex space-x-3">
+                        <a href="#" aria-label="Facebook" class="text-gray-400 hover:text-white transition duration-150">F</a>
+                        <a href="#" aria-label="Twitter" class="text-gray-400 hover:text-white transition duration-150">T</a>
+                        <a href="#" aria-label="Instagram" class="text-gray-400 hover:text-white transition duration-150">I</a>
+                    </div>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h4 class="font-semibold mb-3">Support</h4>
+                    <p class="text-sm text-gray-400">Email: support@affiliatehub.com</p>
+                    <p class="text-sm text-gray-400 mt-1">Phone: +1 (555) 123-4567</p>
+                </div>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-gray-700 text-center">
+                <p class="text-sm text-gray-400">&copy; <span id="current-year"></span> The Affiliate Hub. All rights reserved. <span class="text-yellow-400">Affiliate Disclosure applies.</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- Product Data ---
+        const products = [
+            {
+                id: 1,
+                name: "The Ultimate Noise-Cancelling Headphones",
+                description: "Experience pure audio bliss with industry-leading noise cancellation and 40-hour battery life. Perfect for travel or focus work.",
+                category: "Tech",
+                price: "$299",
+                link: "https://example.com/headphones",
+                imageUrl: "https://placehold.co/600x400/1D4ED8/FFFFFF?text=Headphones"
+            },
+            {
+                id: 2,
+                name: "Ergonomic Mesh Office Chair Pro",
+                description: "Upgrade your work-from-home setup with total lumbar support, breathable mesh, and full adjustability. Rated 5 stars!",
+                category: "Home Office",
+                price: "$450",
+                link: "https://example.com/chair",
+                imageUrl: "https://placehold.co/600x400/F97316/FFFFFF?text=Office+Chair"
+            },
+            {
+                id: 3,
+                name: "Gourmet Coffee Subscription Box",
+                description: "Receive a curated selection of ethically-sourced, high-quality coffee beans delivered right to your door monthly.",
+                category: "Lifestyle",
+                price: "From $25/month",
+                link: "https://example.com/coffee",
+                imageUrl: "https://placehold.co/600x400/EC4899/FFFFFF?text=Coffee+Box"
+            },
+            {
+                id: 4,
+                name: "Portable Solar Power Bank XL",
+                description: "Keep all your devices charged outdoors. 20,000mAh capacity with rapid solar recharging capability. A must-have for camping.",
+                category: "Outdoors",
+                price: "$75",
+                link: "https://example.com/powerbank",
+                imageUrl: "https://placehold.co/600x400/3B82F6/FFFFFF?text=Power+Bank"
+            },
+            {
+                id: 5,
+                name: "Advanced Python Coding Course (Lifetime Access)",
+                description: "Master Python from beginner to advanced concepts with over 80 hours of video content and project-based learning.",
+                category: "Education",
+                price: "$199 (70% Off!)",
+                link: "https://example.com/pythoncourse",
+                imageUrl: "https://placehold.co/600x400/10B981/FFFFFF?text=Python+Course"
+            },
+            {
+                id: 6,
+                name: "Smart Indoor Garden System",
+                description: "Grow fresh herbs and vegetables year-round automatically. Perfect for small apartments and city living. Includes seed pods.",
+                category: "Home Goods",
+                price: "$120",
+                link: "https://example.com/garden",
+                imageUrl: "https://placehold.co/600x400/F59E0B/FFFFFF?text=Indoor+Garden"
+            },
+            {
+                id: 7,
+                name: "Fitness Tracker Watch 3000",
+                description: "Track steps, sleep, and heart rate with this sleek, waterproof fitness watch. Great battery life and app integration.",
+                category: "Tech",
+                price: "$149",
+                link: "https://example.com/watch",
+                imageUrl: "https://placehold.co/600x400/6D28D9/FFFFFF?text=Fitness+Watch"
+            },
+            {
+                id: 8,
+                name: "Digital Recipe E-Book Bundle",
+                description: "Get 500+ healthy recipes for quick weeknight meals. Instant download and compatible with all devices.",
+                category: "Lifestyle",
+                price: "$19",
+                link: "https://example.com/recipes",
+                imageUrl: "https://placehold.co/600x400/D946EF/FFFFFF?text=Recipes"
+            }
+        ];
+
+        // --- DOM Elements ---
+        const productList = document.getElementById('product-list');
+        const searchInput = document.getElementById('search-input');
+        const categoryFilter = document.getElementById('category-filter');
+        const noResultsMessage = document.getElementById('no-results');
+        const modal = document.getElementById('message-modal');
+        const modalContent = document.getElementById('modal-content');
+        const modalMessage = document.getElementById('modal-message');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        // Global variable to store the link we are redirecting to
+        let targetAffiliateLink = '';
+
+        // --- Core Functions ---
+
+        /**
+         * Dynamically populates the category filter dropdown.
+         */
+        function populateCategoryFilter() {
+            const categories = [...new Set(products.map(p => p.category))];
+            let optionsHtml = '<option value="All Categories">All Categories</option>';
+            categories.forEach(cat => {
+                optionsHtml += `<option value="${cat}">${cat}</option>`;
+            });
+            categoryFilter.innerHTML = optionsHtml;
+        }
+
+        /**
+         * Filters the product list based on search term and selected category.
+         */
+        function filterProducts() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            const selectedCategory = categoryFilter.value;
+
+            const filteredProducts = products.filter(product => {
+                const matchesSearch = 
+                    product.name.toLowerCase().includes(searchTerm) || 
+                    product.description.toLowerCase().includes(searchTerm) ||
+                    product.category.toLowerCase().includes(searchTerm);
+
+                const matchesCategory = 
+                    selectedCategory === 'All Categories' || 
+                    product.category === selectedCategory;
+
+                return matchesSearch && matchesCategory;
+            });
+
+            renderProducts(filteredProducts);
+        }
+
+
+        /**
+         * Renders the product cards into the Product Listing Section.
+         * @param {Array<Object>} productsToRender - The array of products to display.
+         */
+        function renderProducts(productsToRender = products) {
+            if (productsToRender.length === 0) {
+                productList.innerHTML = '';
+                noResultsMessage.classList.remove('hidden');
+                return;
+            }
+
+            noResultsMessage.classList.add('hidden');
+            
+            productList.innerHTML = productsToRender.map(product => `
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden border border-gray-100 flex flex-col">
+                    <!-- Image Placeholder -->
+                    <div class="relative h-48 sm:h-56 bg-gray-100">
+                        <img src="${product.imageUrl}" onerror="this.onerror=null;this.src='https://placehold.co/600x400/D1D5DB/1F2937?text=Image+Missing';" alt="${product.name}" class="w-full h-full object-cover">
+                        <span class="absolute top-3 right-3 bg-accent text-white text-xs font-bold px-3 py-1 rounded-full">${product.category}</span>
+                    </div>
+
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">${product.name}</h3>
+                        <p class="text-secondary font-extrabold text-2xl mb-3">${product.price}</p>
+                        <p class="text-gray-600 mb-4 flex-grow">${product.description}</p>
+                        
+                        <!-- CTA Button -->
+                        <button 
+                            data-link="${product.link}" 
+                            data-name="${product.name}" 
+                            onclick="openModal(this)" 
+                            class="mt-auto w-full px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-blue-600 transition duration-300 shadow-md transform hover:translate-y-[-2px] active:translate-y-0"
+                        >
+                            View Deal
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        /**
+         * Resets the search input and category filter to default values and re-renders all products.
+         */
+        function resetFilters() {
+            searchInput.value = '';
+            categoryFilter.value = 'All Categories';
+            filterProducts();
+        }
+
+        /**
+         * Opens the custom modal for deal confirmation.
+         * @param {HTMLElement} button - The button element that was clicked.
+         */
+        function openModal(button) {
+            targetAffiliateLink = button.getAttribute('data-link');
+            const productName = button.getAttribute('data-name');
+            
+            modalMessage.innerHTML = `You are about to be redirected to the merchant's site for: <strong>${productName}</strong>. Thank you for supporting us!`;
+
+            modal.classList.remove('hidden');
+            // Animate in
+            setTimeout(() => {
+                modalContent.classList.remove('opacity-0', 'scale-95');
+                modalContent.classList.add('opacity-100', 'scale-100');
+            }, 10);
+        }
+
+        /**
+         * Closes the custom modal.
+         */
+        function closeModal() {
+            // Animate out
+            modalContent.classList.remove('opacity-100', 'scale-100');
+            modalContent.classList.add('opacity-0', 'scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                targetAffiliateLink = '';
+            }, 300); // Match the CSS transition duration
+        }
+
+        /**
+         * Simulates the affiliate redirect.
+         */
+        function simulateRedirect() {
+            // In a real application, you would navigate here:
+            // window.location.href = targetAffiliateLink;
+
+            console.log(`Simulating redirect to affiliate link: ${targetAffiliateLink}`);
+
+            // Show a temporary success message before closing
+            modalMessage.textContent = "Redirecting... (Check console for link).";
+            
+            setTimeout(() => {
+                closeModal();
+                // Optionally, in a real environment, you might wait a moment and then redirect.
+            }, 1000);
+        }
+        
+        /**
+         * Toggles the mobile navigation menu visibility.
+         */
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        // --- Event Listeners and Initializers ---
+
+        // Set current year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Attach listener to mobile menu button
+        mobileMenuButton.addEventListener('click', toggleMobileMenu);
+
+        // Close modal if user clicks outside of the content (on the dark overlay)
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+        
+        // Initial setup on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            populateCategoryFilter();
+            renderProducts(); // Render all products initially
+        });
+        
+    </script>
+</body>
+</html>
