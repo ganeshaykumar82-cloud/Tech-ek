@@ -255,6 +255,7 @@
 
     <script>
         // --- Product Data ---
+        // IMPORTANT: Replace the 'link' values with your actual full affiliate URLs (starting with https://)
         const products = [
             {
                 id: 1,
@@ -262,7 +263,7 @@
                 description: "Experience pure audio bliss with industry-leading noise cancellation and 40-hour battery life. Perfect for travel or focus work.",
                 category: "Tech",
                 price: "$299",
-                link: "https://example.com/headphones",
+                link: "https://example.com/headphones", // REPLACE THIS LINK
                 imageUrl: "https://placehold.co/600x400/1D4ED8/FFFFFF?text=Headphones"
             },
             {
@@ -271,7 +272,7 @@
                 description: "Upgrade your work-from-home setup with total lumbar support, breathable mesh, and full adjustability. Rated 5 stars!",
                 category: "Home Office",
                 price: "$450",
-                link: "https://example.com/chair",
+                link: "https://example.com/chair", // REPLACE THIS LINK
                 imageUrl: "https://placehold.co/600x400/F97316/FFFFFF?text=Office+Chair"
             },
             {
@@ -280,7 +281,7 @@
                 description: "Receive a curated selection of ethically-sourced, high-quality coffee beans delivered right to your door monthly.",
                 category: "Lifestyle",
                 price: "From $25/month",
-                link: "https://example.com/coffee",
+                link: "https://example.com/coffee", // REPLACE THIS LINK
                 imageUrl: "https://placehold.co/600x400/EC4899/FFFFFF?text=Coffee+Box"
             },
             {
@@ -289,7 +290,7 @@
                 description: "Keep all your devices charged outdoors. 20,000mAh capacity with rapid solar recharging capability. A must-have for camping.",
                 category: "Outdoors",
                 price: "$75",
-                link: "https://example.com/powerbank",
+                link: "https://example.com/powerbank", // REPLACE THIS LINK
                 imageUrl: "https://placehold.co/600x400/3B82F6/FFFFFF?text=Power+Bank"
             },
             {
@@ -298,7 +299,7 @@
                 description: "Master Python from beginner to advanced concepts with over 80 hours of video content and project-based learning.",
                 category: "Education",
                 price: "$199 (70% Off!)",
-                link: "https://example.com/pythoncourse",
+                link: "https://example.com/pythoncourse", // REPLACE THIS LINK
                 imageUrl: "https://placehold.co/600x400/10B981/FFFFFF?text=Python+Course"
             },
             {
@@ -307,7 +308,7 @@
                 description: "Grow fresh herbs and vegetables year-round automatically. Perfect for small apartments and city living. Includes seed pods.",
                 category: "Home Goods",
                 price: "$120",
-                link: "https://affiliate.meesho.com/collection/MTA0NDA0MyUzQSUzQSUzQSUzQSUzQSUzQW5vcm1hbA",
+                link: "https://example.com/garden", // REPLACE THIS LINK
                 imageUrl: "https://placehold.co/600x400/F59E0B/FFFFFF?text=Indoor+Garden"
             },
             {
@@ -316,7 +317,7 @@
                 description: "Track steps, sleep, and heart rate with this sleek, waterproof fitness watch. Great battery life and app integration.",
                 category: "Tech",
                 price: "$149",
-                link: "https://example.com/watch",
+                link: "https://example.com/watch", // REPLACE THIS LINK
                 imageUrl: "https://placehold.co/600x400/6D28D9/FFFFFF?text=Fitness+Watch"
             },
             {
@@ -325,7 +326,7 @@
                 description: "Get 500+ healthy recipes for quick weeknight meals. Instant download and compatible with all devices.",
                 category: "Lifestyle",
                 price: "$19",
-                link: "https://example.com/recipes",
+                link: "https://example.com/recipes", // REPLACE THIS LINK
                 imageUrl: "https://placehold.co/600x400/D946EF/FFFFFF?text=Recipes"
             }
         ];
@@ -464,21 +465,27 @@
         }
 
         /**
-         * Simulates the affiliate redirect.
+         * Executes the real affiliate redirect in a new tab.
          */
         function simulateRedirect() {
-            // In a real application, you would navigate here:
-            // window.location.href = targetAffiliateLink;
-
-            console.log(`Simulating redirect to affiliate link: ${targetAffiliateLink}`);
-
-            // Show a temporary success message before closing
-            modalMessage.textContent = "Redirecting... (Check console for link).";
+            // Check if a link exists before attempting redirect
+            if (!targetAffiliateLink) {
+                console.error("No target affiliate link set.");
+                closeModal();
+                return;
+            }
             
+            // 1. Open the affiliate link in a new tab. 
+            // We use noopener and noreferrer for security and best practice.
+            window.open(targetAffiliateLink, '_blank', 'noopener,noreferrer');
+
+            // 2. Update the modal message briefly
+            modalMessage.textContent = "Redirecting... (New tab opened).";
+            
+            // 3. Close the modal after a short delay
             setTimeout(() => {
                 closeModal();
-                // Optionally, in a real environment, you might wait a moment and then redirect.
-            }, 1000);
+            }, 500);
         }
         
         /**
@@ -511,7 +518,4 @@
         
     </script>
 </body>
-
 </html>
-
-
